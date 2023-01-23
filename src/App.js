@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
+import Games from "./components/Games";
+import { fetchData } from "./Api";
 
-function App() {
+const App = () => {
+  const [title, setTitle] = useState("");
+  const [data, setData] = useState([]);
+
+  // const getGamesDetail = async fetchData => {
+  //   try {
+  //     const res = await fetchData;
+  //     const data = await res.json;
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    const getData = async () => {
+      const result = await fetchData();
+      delete result.data[0];
+      setData(result.data);
+      // console.log(result.data);
+    };
+    // getGamesDetail(fetchData);
+    getData();
+  }, []);
+
+  // const getTitle = title => {
+  //   setTitle(title);
+  //   // console.log(title);
+  // };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* <Header /> */}
+      <Games data={data} key={data} />
+    </>
   );
-}
+};
 
 export default App;
